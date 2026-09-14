@@ -1,0 +1,12 @@
+{
+  "name": "asaf",
+  "private": true,
+  "version": "0.0.0",
+  "workspaces": [
+    "7-9-26/*",
+    "14-9-26/*"
+  ],
+  "devDependencies": {
+    "nx": "^23.2.1"
+  }
+}
