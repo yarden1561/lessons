@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useEffect } from 'react'
 import './App.css'
 
 export default function Posts() {
@@ -11,9 +12,12 @@ export default function Posts() {
     setPosts(data)
   }
 
+  useEffect(() => {
+    getPosts()
+  }, [])
+
   return (
     <>
-    <button onClick={getPosts}>Get Posts</button>
 
   <h1>Posts List</h1>
     <ul>
