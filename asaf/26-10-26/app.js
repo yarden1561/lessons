@@ -5,28 +5,28 @@ const app = express();
 
 app.use(express.json());
 
-app.get('/', async (req, res) => {
+app.get('/cities', async (req, res) => {
 
-  const rows = await sql`SELECT * FROM person order by id`;
-  res.json(rows);
+  const cities = await sql`SELECT * FROM cities order by city_id`;
+  res.json(cities);
 });
 
-app.post('/', async (req, res) => {
+app.post('/city', async (req, res) => {
   try {
-  const {name, salary} = req.body;
-  const rows = await sql`INSERT INTO person (full_name, salary) VALUES (${name}, ${salary})`;
-  res.json(rows);
+  const {city_name} = req.body;
+  const city = await sql`INSERT INTO cities (city_name) VALUES (${city_name})`;
+  res.json(city);
 } catch (error) {
   console.error(error);
   res.status(500).json({ error: 'Internal server error' });
 }
 });
 
-app.put('/:id', async (req, res) => {
+app.put('/city/:id', async (req, res) => {
   try {
   const {id} = req.params;
-  const {name, salary} = req.body;
-  const rows = await sql`UPDATE person SET full_name = ${name}, salary = ${salary} WHERE id = ${id}`;
+  const {city_name} = req.body;
+  const rows = await sql`UPDATE cities SET city_name = ${city_name} WHERE city_id = ${id}`;
   res.json(rows);
 } catch (error) {
   console.error(error);
@@ -34,28 +34,10 @@ app.put('/:id', async (req, res) => {
 }
 });
 
-app.get('/course', async (req, res) => {
-
-  const rows = await sql`SELECT * FROM course order by id`;
-  res.json(rows);
-});
-
-app.post('/course', async (req, res) => {
-  try {
-  const {name, price} = req.body;
-  const rows = await sql`INSERT INTO course (course_name, price) VALUES (${name}, ${price})`;
-  res.json(rows);
-} catch (error) {
-  console.error(error);
-  res.status(500).json({ error: 'Internal server error' });
-}
-});
-
-app.put('/course/:id', async (req, res) => {
+app.delete('/city/:id', async (req, res) => {
   try {
   const {id} = req.params;
-  const {course_name, price} = req.body;
-  const rows = await sql`UPDATE course SET course_name = ${course_name}, price = ${price} WHERE id = ${id}`;
+  const rows = await sql`DELETE FROM cities WHERE city_id = ${id}`;
   res.json(rows);
 } catch (error) {
   console.error(error);
@@ -63,10 +45,64 @@ app.put('/course/:id', async (req, res) => {
 }
 });
 
-app.delete('/course/:id', async (req, res) => {
+app.get('/full/city/:id', async (req, res) => {
+  try {
+    const {id} = req.params;
+    const city = await sql`SELECT * FROM cities JOIN doctors ON cities.city_id = doctors.city_id WHERE cities.city_id = ${id}`;
+    res.json(city);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+app.get('/full/cities', async (req, res) => {
+  try {
+    const cities = await sql`SELECT * FROM cities JOIN doctors ON cities.city_id = doctors.city_id`;
+    res.json(cities);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// Doctors endpoints
+// doctor_id, full_name , prices , city_id
+
+
+app.get('/doctors', async (req, res) => {
+
+  const rows = await sql`SELECT * FROM doctors order by doctor_id`;
+  res.json(rows);
+});
+
+app.post('/doctors', async (req, res) => {
+  try {
+  const {full_name, prices, city_id} = req.body;
+  const rows = await sql`INSERT INTO doctors (full_name, prices, city_id) VALUES (${full_name}, ${prices}, ${city_id})`;
+  res.json(rows);
+} catch (error) {
+  console.error(error);
+  res.status(500).json({ error: 'Internal server error' });
+}
+});
+
+app.put('/doctors/:id', async (req, res) => {
   try {
   const {id} = req.params;
-  const rows = await sql`DELETE FROM course WHERE id = ${id}`;
+  const {full_name, prices, city_id} = req.body;
+  const rows = await sql`UPDATE doctors SET full_name = ${full_name}, prices = ${prices}, city_id = ${city_id} WHERE doctor_id = ${id}`;
+  res.json(rows);
+} catch (error) {
+  console.error(error);
+  res.status(500).json({ error: 'Internal server error' });
+}
+});
+
+app.delete('/doctors/:id', async (req, res) => {
+  try {
+  const {id} = req.params;
+  const rows = await sql`DELETE FROM doctors WHERE doctor_id = ${id}`;
   res.json(rows);
 } catch (error) {
   console.error(error);
