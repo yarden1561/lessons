@@ -1,4 +1,4 @@
-const {sql} = require('./db.js');
+const {sql} = require('../db.js');
 
 exports.getAllCities = async (req, res) => {
   try {
@@ -53,48 +53,3 @@ exports.deleteCity = async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 };
-
-
-app.put('/city/:id', async (req, res) => {
-  try {
-  const {id} = req.params;
-  const {city_name} = req.body;
-  const rows = await sql`UPDATE cities SET city_name = ${city_name} WHERE city_id = ${id}`;
-  res.json(rows);
-} catch (error) {
-  console.error(error);
-  res.status(500).json({ error: 'Internal server error' });
-}
-});
-
-app.delete('/city/:id', async (req, res) => {
-  try {
-  const {id} = req.params;
-  const rows = await sql`DELETE FROM cities WHERE city_id = ${id}`;
-  res.json(rows);
-} catch (error) {
-  console.error(error);
-  res.status(500).json({ error: 'Internal server error' });
-}
-});
-
-app.get('/full/city/:id', async (req, res) => {
-  try {
-    const {id} = req.params;
-    const city = await sql`SELECT * FROM cities JOIN doctors ON cities.city_id = doctors.city_id WHERE cities.city_id = ${id}`;
-    res.json(city);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Internal server error' });
-  }
-});
-
-app.get('/full/cities', async (req, res) => {
-  try {
-    const cities = await sql`SELECT * FROM cities JOIN doctors ON cities.city_id = doctors.city_id`;
-    res.json(cities);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Internal server error' });
-  }
-});
