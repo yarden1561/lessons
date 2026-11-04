@@ -1,0 +1,87 @@
+@baseUrl = http://localhost:3000
+
+### ===== Hospitals =====
+
+### Get all hospitals
+GET {{baseUrl}}/hospital
+
+### Create a hospital
+POST {{baseUrl}}/hospital
+Content-Type: application/json
+
+{
+  "hospital_name": "Ichilov",
+  "hospital_country": "Israel"
+}
+
+### Update a hospital (change the id in the URL)
+PUT {{baseUrl}}/hospital/1
+Content-Type: application/json
+
+{
+  "hospital_name": "Ichilov Medical Center",
+  "hospital_country": "Israel"
+}
+
+### Delete a hospital (change the id in the URL)
+DELETE {{baseUrl}}/hospital/1
+
+
+### ===== Cities =====
+
+### Get all cities
+GET {{baseUrl}}/city
+
+### Create a city
+POST {{baseUrl}}/city
+Content-Type: application/json
+
+{
+  "city_name": "Haifa"
+}
+
+### Update a city
+PUT {{baseUrl}}/city/1
+Content-Type: application/json
+
+{
+  "city_name": "Holon"
+}
+
+### Delete a city
+DELETE {{baseUrl}}/city/99
+
+
+### ===== Doctors =====
+
+### Get all doctors
+GET {{baseUrl}}/doctors
+
+### Get all doctors with their city
+GET {{baseUrl}}/doctors/full
+
+### Get one doctor with their city
+GET {{baseUrl}}/doctors/full/1
+
+### Create a doctor
+POST {{baseUrl}}/doctors
+Content-Type: application/json
+
+{
+  "full_name": "Moshe",
+  "prices": 200,
+  "city_id": 1
+}
+
+### Update a doctor
+PUT {{baseUrl}}/doctors/1
+Content-Type: application/json
+
+{
+  "full_name": "Reoven",
+  "prices": 120,
+  "city_id": 2
+}
+
+### Delete a doctor
+DELETE {{baseUrl}}/doctors/99
